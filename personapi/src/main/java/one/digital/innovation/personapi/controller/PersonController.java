@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping ("/api/v1/people")
+@RequestMapping("/api/v1/people")
 public class PersonController {
 
     private PersonService personService;
@@ -24,20 +24,27 @@ public class PersonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResponseDTO createPerson(@RequestBody @Valid PersonDTO personDTO){
+    public MessageResponseDTO createPerson(@RequestBody @Valid PersonDTO personDTO) {
 
         return personService.createPerson(personDTO);
     }
 
     @GetMapping
-    public List<PersonDTO> listAll (){
+    public List<PersonDTO> listAll() {
         return personService.listAll();
     }
 
-    @GetMapping ("/{id}")
-    public PersonDTO findById (@PathVariable Integer id) throws PersonNotFoundException {
+    @GetMapping("/{id}")
+    public PersonDTO findById(@PathVariable Integer id) throws PersonNotFoundException {
 
         return personService.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Integer id) throws PersonNotFoundException {
+        personService.delete(id);
+
     }
 
 }
