@@ -52,7 +52,7 @@ public class PersonService {
 
         personRepository.deleteById(id);
     }
-    
+
     public MessageResponseDTO updateById(Integer id, PersonDTO personDTO) throws PersonNotFoundException {
         verifyIfExists(id);
 
