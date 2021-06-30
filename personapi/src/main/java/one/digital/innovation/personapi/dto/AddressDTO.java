@@ -1,23 +1,23 @@
-package one.digital.innovation.personapi.entity;
+package one.digital.innovation.personapi.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
-@Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Address {
+public class AddressDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotEmpty
+    @Size(min = 8, max = 8)
     private String cep;
 
     private String logradouro;
@@ -27,7 +27,4 @@ public class Address {
     private String localidade;
 
     private String uf;
-
-    @OneToOne(mappedBy = "address")
-    private Person person;
 }

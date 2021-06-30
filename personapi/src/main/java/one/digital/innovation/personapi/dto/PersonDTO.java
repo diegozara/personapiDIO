@@ -23,7 +23,6 @@ public class PersonDTO {
     @Size(min = 2, max = 100)
     private String firstName;
 
-    @NotEmpty
     @Size(min = 2, max = 100)
     private String lastName;
 
@@ -31,7 +30,12 @@ public class PersonDTO {
     @CPF
     private String cpf;
 
+    @Size(min = 2, max = 8)
+    private String zipCode;
+
     private String birthDate;
+
+    private AddressDTO address;
 
     @Valid
     @NotEmpty

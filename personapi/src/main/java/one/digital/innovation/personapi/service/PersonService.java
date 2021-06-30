@@ -2,12 +2,14 @@ package one.digital.innovation.personapi.service;
 
 import one.digital.innovation.personapi.dto.MessageResponseDTO;
 import one.digital.innovation.personapi.dto.PersonDTO;
+import one.digital.innovation.personapi.entity.Address;
 import one.digital.innovation.personapi.entity.Person;
 import one.digital.innovation.personapi.exception.PersonNotFoundException;
 import one.digital.innovation.personapi.mapper.PersonMapper;
 import one.digital.innovation.personapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +30,11 @@ public class PersonService {
 
     public MessageResponseDTO createPerson(PersonDTO personDTO) {
 
+        Address address = createAddress(personDTO.getZipCode());
+
         Person personToSave = personMapper.toModel(personDTO);
+
+        personToSave.setAddress(address);
 
         Person savedPerson = personRepository.save(personToSave);
         return createMessageResponse(savedPerson.getId(), "Created Person with id: ");
@@ -56,7 +62,11 @@ public class PersonService {
     public MessageResponseDTO updateById(Integer id, PersonDTO personDTO) throws PersonNotFoundException {
         verifyIfExists(id);
 
+        Address address = createAddress(personDTO.getZipCode());
+
         Person personToUpdate = personMapper.toModel(personDTO);
+
+        personToUpdate.setAddress(address);
 
         Person updatedPerson = personRepository.save(personToUpdate);
         return createMessageResponse(updatedPerson.getId(), "Updated Person with id: ");
@@ -72,5 +82,13 @@ public class PersonService {
                 .builder()
                 .message(message + id)
                 .build();
+    }
+
+    private Address createAddress(String zipCode) {
+
+        String url = "https://viacep.com.br/ws/"+zipCode+"/json/";
+        RestTemplate restTemplate = new RestTemplate();
+        Address address = restTemplate.getForObject(url, Address.class);
+        return address;
     }
 }

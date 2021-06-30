@@ -1,6 +1,7 @@
 package one.digital.innovation.personapi.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,6 +31,13 @@ public class Person {
 
     @Column(nullable = false, unique = true)
     private String cpf;
+
+    @Column(nullable = false)
+    private String zipCode;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "person_id")
+    private Address address;
 
     private LocalDate birthDate;
 
